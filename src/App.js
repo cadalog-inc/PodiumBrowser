@@ -180,7 +180,7 @@ class App extends React.Component {
         }
     }
 
-    setLicense(license, isValid) {
+    setLicense(license, isValid, useHDR = true) {
         const sd = license.checkin.split('/');
         const nd = new Date(sd[2], sd[1] - 1, sd[0]);
         license.checkin = nd.toLocaleDateString();
