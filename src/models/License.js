@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+/*global sketchup*/
+
 class License {
     constructor(fingerprint, id, key, checkin) {
         this.fingerprint = fingerprint;
@@ -28,10 +30,14 @@ class License {
     }
 
     static setLicense(license) {
-        try {
-            localStorage.setItem("PodiumBrowserStandaloneLicense", btoa(JSON.stringify(license)));
-        } catch(e) {
-            console.log(e);
+        if(window.isPodiumBrowser2022Standalone) {
+            sketchup.setLicense(JSON.stringify(license));
+        } else {
+            try {
+                localStorage.setItem("PodiumBrowserStandaloneLicense", btoa(JSON.stringify(license)));
+            } catch(e) {
+                console.log(e);
+            }
         }
     }
 
@@ -80,7 +86,7 @@ class License {
                     this.checkin = new Date(expiry.year, expiry.month-1, expiry.day).toLocaleDateString();
                 } else {
                     const nd = new Date();
-                    nd.setMonth(nd.getMonth() + 1);
+                    nd.setMonth(nd.getMonth() + 12);
                     this.checkin = nd.toLocaleDateString();
                 }
                 // todo: set expiry if not already set
@@ -105,7 +111,7 @@ class License {
                     this.checkin = new Date(expiry.year, expiry.month-1, expiry.day).toLocaleDateString();
                 } else {
                     const nd = new Date();
-                    nd.setMonth(nd.getMonth() + 1);
+                    nd.setMonth(nd.getMonth() + 12);
                     this.checkin = nd.toLocaleDateString();
                 }
                 License.setLicense(this);

@@ -175,27 +175,33 @@ class App extends React.Component {
         if (window.sketchup !== undefined) {
             sketchup.getLicense();
         } else {
-            // this.dataDownloaded();
             this.validateLicense();
         }
     }
 
-    setLicense(license, isValid, useHDR = true) {
+    setLicense(license, isValid, useHDR = true, standalone = false) {
         const sd = license.checkin.split('/');
         const nd = new Date(sd[2], sd[1] - 1, sd[0]);
         license.checkin = nd.toLocaleDateString();
         this.setState({
             license: license,
-            useHDR: true,
-            standalone: false,
+            useHDR: useHDR,
+            standalone: standalone,
             isValid: isValid
         }, () => {
             this.getUser();
         })
     }
 
-    validateLicense() {
-        License.getLicense().validate((license, valid) => {
+    validateLicense(licenseObj = null) {
+        let license = null;
+        if(licenseObj) {
+            license = new License(licenseObj.fingerprint, licenseObj.id, licenseObj.key, licenseObj.checkin);
+            window.isPodiumBrowser2022Standalone = true;
+        } else {
+            license = License.getLicense();
+        }
+        license.validate((license, valid) => {
             this.setState({
                 license: license,
                 useHDR: false,
