@@ -30,7 +30,7 @@ class License {
     }
 
     static setLicense(license) {
-        if(window.isPodiumBrowser2022Standalone) {
+        if(window["isPodiumBrowser2022Standalone"]) {
             sketchup.setLicense(JSON.stringify(license));
         } else {
             try {

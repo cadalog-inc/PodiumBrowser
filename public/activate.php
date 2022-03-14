@@ -29,6 +29,7 @@ function getLicenseId($key) {
     curl_setopt($ch, CURLOPT_URL, $url);                                             
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     $headers = [
         'Content-Type: application/vnd.api+json',
@@ -66,6 +67,7 @@ function updateExpiry($id) {
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     $headers = [
         'Content-Type: application/vnd.api+json',
@@ -114,6 +116,7 @@ function activate($key, $fingerprint) {
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         
         $headers = [
             'Content-Type: application/vnd.api+json',

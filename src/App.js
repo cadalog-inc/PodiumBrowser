@@ -56,6 +56,7 @@ class App extends React.Component {
         };
         window["setLicense"] = this.setLicense.bind(this);
         window["validateLicense"] = this.validateLicense.bind(this);
+        window["isPodiumBrowser2022Standalone"] = false;
         // admin
         window["currentCategory"] = null;
         window["itemsInCurrentCategory"] = [];
@@ -197,7 +198,7 @@ class App extends React.Component {
         let license = null;
         if(licenseObj) {
             license = new License(licenseObj.fingerprint, licenseObj.id, licenseObj.key, licenseObj.checkin);
-            window.isPodiumBrowser2022Standalone = true;
+            window["isPodiumBrowser2022Standalone"] = true;
         } else {
             license = License.getLicense();
         }

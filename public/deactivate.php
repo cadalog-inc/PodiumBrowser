@@ -40,6 +40,7 @@ function deactivate($machineId) {
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     $headers = [
         'Content-Type: application/vnd.api+json',

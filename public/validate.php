@@ -34,6 +34,7 @@ function validate($key, $fingerprint) {
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     $headers = [
         'Content-Type: application/vnd.api+json',

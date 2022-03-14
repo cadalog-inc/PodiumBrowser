@@ -13,7 +13,7 @@ export class Category extends React.Component {
 
         if(this.props.isHomeCategory(this.props.category.id)) {
             this.props.sortItems(items, "Date Uploaded (New to Old)");
-            items = items.slice(0, 400);
+            items = items.slice(0, 1000);
         }
 
         this.props.sortItems(items, this.props.query.sortBy);

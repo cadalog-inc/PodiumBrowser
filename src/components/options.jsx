@@ -10,7 +10,7 @@ export class Options extends React.Component {
         super(props);
         this.state = {
             pageSizes: [
-                25, 50, 100, 200, 400
+                25, 50, 100, 200, 400, 1000
             ],
             sortBys: [
                 'File Name (A to Z)',
