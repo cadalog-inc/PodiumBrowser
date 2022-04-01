@@ -1,30 +1,43 @@
 <?php
 
 function validate($key, $fingerprint) {
-    if(!file_exists('./licenses/'.$key)) {
-        return error(404, "Error: License ".$key." not found.");
-    }
-    $license = json_decode(file_get_contents('./licenses/'.$key, true));
-
-    $machines = $license->machines;
-    $ml = count($machines);
-    for($i = 0; $i < $ml; $i++) {
-        $machine = $machines[$i];
-        if($machine->fingerprint == $fingerprint) {
-            return (object) array(
-                "key" $key,
-                "fingerprint" $fingerprint,
-                "id" $machine->id,
-                "expiry" $license->expiry
-            );
+    class MyDB extends SQLite3 {
+        function __construct() {
+            $this->open('./test.db');
         }
     }
+    $db = new MyDB();
+    if(!$db) {
+        $db->close();
+        return error(404, "Error: Unable to validate license ".$key);
+    }
+
+    $ret = $db->query('select machine_id, fingerprint, key, expiry from machines join licenses on licenses.id = machines.license_id where key = "'.$key.'" and fingerprint = "'.$fingerprint.'";');
+    while($row = $ret->fetchArray(SQLITE3_ASSOC)) {
+        $key = $row['key'];
+        $fingerprint = $row['fingerprint'];
+        $id = $row['machine_id'];
+        $expiry = $row['expiry'];
+        $db->close();
+        return success($key, $fingerprint, $id, $expiry);
+    }
+
+    $db->close();
 
     return error(404, "Error: Activation of license ".$key." not found.");
 }
 
+function success($key, $fingerprint, $id, $expiry) {
+    return (object) array(
+        "key" => $key,
+        "fingerprint" => $fingerprint,
+        "id" => $id,
+        "expiry" => $expiry == "" ? null : $expiry
+    );
+}
+
 function error($statusCode, $detail) {
-    (object)array(
+    return (object)array(
         "statusCode" => $statusCode,
         "body" => (object)array(
             "errors" => [
@@ -33,7 +46,7 @@ function error($statusCode, $detail) {
                 )
             ]
         )
-    )
+    );
 }
 
 ?>
