@@ -110,4 +110,7 @@ echo "Select machine join licenses done successfully<br><br>";
 
 $db->close();
 
+// test validate.php
+// https://v4.pdm-plants-textures.com/license/validate.php?key=PD81da3a61ace20461&fingerprint=411c3d06-a330-6ed7-a8b2-5385d046cc35
+
 ?>
