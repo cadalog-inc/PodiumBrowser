@@ -15,7 +15,7 @@ export class NavBar extends React.Component {
             selectedCategoryId: this.props.getHomeCategory(),
             query: new Query(),
             searchTerm: "",
-            showLicenseManager: false,
+            showLicenseManager: this.props.standalone && this.props.license.days() < 40 ? true : false,
             cachingData: false
         }
         this.search = "";
