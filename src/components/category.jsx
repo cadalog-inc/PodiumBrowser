@@ -11,9 +11,29 @@ export class Category extends React.Component {
             return (this.props.query.onlyFree === false || item.isFree) && (this.props.query.onlyRecent === false || this.props.isItemRecent(item)) && (this.props.query.searchTerm === "" || item.title.toUpperCase().includes(this.props.query.searchTerm.toUpperCase()) || this.props.searchArray(item.tags, this.props.query.searchTerm)) && (this.props.useHDR || item.fileExt !== 'hdr');
         });
 
-        if(this.props.isHomeCategory(this.props.category.id)) {
-            this.props.sortItems(items, "Date Uploaded (New to Old)");
-            items = items.slice(0, 1000);
+        if (this.props.isHomeCategory(this.props.category.id)) {
+            let recentItems = this.props.items.filter((item) => {
+                return !this.props.searchArray(item.tags, 'home');
+            });
+            this.props.sortItems(recentItems, "Date Uploaded (New to Old)");
+            let homeItems = this.props.items.filter((item) => {
+                return this.props.searchArray(item.tags, 'home');
+            });
+            let rl = recentItems.length;
+            let hl = homeItems.length;
+            if (hl >= 500) {
+                hl = 500;
+                rl = 500;
+            } else {
+                rl = 1000 - hl;
+            }
+
+            let finalItems = [...recentItems.slice(0, rl), ...homeItems.slice(0, hl)]
+                .map(item => ({ item, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ item }) => item);
+            
+            items = [...finalItems];
         }
 
         this.props.sortItems(items, this.props.query.sortBy);

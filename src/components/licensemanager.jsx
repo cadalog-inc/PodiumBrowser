@@ -78,30 +78,32 @@ export class LicenseManager extends React.Component {
                 </Button>
             </Form>
         ) : (
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>
-                                This computer has been activated with a fully licensed copy of Podium Browser
-                        </Form.Label>
-                            <Form.Control type="text" readOnly value={this.props.license.key} />
-                        </Form.Group>
-                        <Button variant="dark" type="button" onClick={() => {
-                            this.props.license.deactivate((license) => {
-                                this.props.handleUpdateLicense(license);
-                                this.setState({
-                                    screen: 'purchase'
-                                });
-                            }, (error) => {
-                                window.alert(error);
-                            })
-                        }}>
-                            Deactivate License
-                        </Button>
-                        <Form.Text className="text-muted">
-                            License expiration date: <span style={{ fontWeight: 'bold' }}>{this.props.license.checkin}</span>.
-                            You have <span style={{ fontWeight: 'bold' }}>{this.props.license.days()}</span> days remaining.
-                        </Form.Text>
-                    </Form>
-                );
+            <Form>
+                <Form.Group>
+                    <Form.Label>
+                        This computer has been activated with a fully licensed copy of Podium Browser
+                    </Form.Label>
+                    <Form.Control type="text" readOnly value={this.props.license.key} />
+                </Form.Group>
+                <Button variant="dark" type="button" onClick={() => {
+                    this.props.license.deactivate((license) => {
+                        this.props.handleUpdateLicense(license);
+                        this.setState({
+                            screen: 'purchase'
+                        });
+                    }, (error) => {
+                        window.alert(error);
+                    })
+                }}>
+                    Deactivate License
+                </Button>
+                <Form.Text className="text-muted">
+                    <span style={{ color: this.props.license.days() <= 30 ? 'red' : 'black' }}>
+                        License expiration date: <span style={{ fontWeight: 'bold' }}>{this.props.license.checkin}</span>.
+                        You have <span style={{ fontWeight: 'bold' }}>{this.props.license.days()}</span> days remaining.
+                    </span>
+                </Form.Text>
+            </Form>
+        );
     }
 }
